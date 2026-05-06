@@ -52,7 +52,11 @@ git clone https://github.com/SaleenaF/Superstore-Dashboard-Project.git
 2. Click the **dropdown arrow** in the terminal  
 3. Select **Git Bash** (instead of PowerShell or Command Prompt)  
 
-If you don’t see Git Bash, download it from the [Git](https://git-scm.com) website, install, and restart VS Code.
+If you don’t have Git installed, download it from the [Git](https://git-scm.com) website.  
+Installing Git will also install **Git Bash**, which we will use in VS Code.
+
+If you don’t have Python installed, download it from the [Python](https://www.python.org/downloads/) website.  
+Make sure to check **"Add Python to PATH"** during installation.
 
 ---
 
@@ -68,6 +72,11 @@ cd Superstore-Dashboard-Project
 
 ```bash
 pip install -r requirements.txt
+```
+If you get errors, try upgrading pip:
+
+```bash
+python -m pip install --upgrade pip
 ```
 
 ---
