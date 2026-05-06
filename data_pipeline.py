@@ -68,4 +68,4 @@ print(monthly_sales.head())
 # STEP 5: Save Clean Data (optional)
 # ==============================
 
-df.to_csv("cleaned_superstore_data.csv", index=False)
+df.to_csv("data/cleaned_superstore_data.csv", index=False)
