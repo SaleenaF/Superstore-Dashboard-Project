@@ -10,36 +10,25 @@ We perform:
 * Exploratory Data Analysis (EDA)  
 * Interactive dashboard development using Plotly Dash  
 
-The goal is to simulate a real-world data analyst workflow and support data-driven decision-making.
-
 ---
 
 ## 📂 Dataset
 
 Dataset used: **Superstore Sales Dataset (Kaggle)**
 
-It includes:
+Includes:
 
 * Sales, Profit, Category, Region  
-* Order Dates (time-based analysis)  
-* Customer and product-level data  
+* Order Dates  
+* Customer & product data  
 
 ---
 
-## ⚙️ Setup Instructions (IMPORTANT)
-
-Follow these steps before running the project:
-
-### 1. Clone the repository
+## ⚙️ Setup Instructions
 
 ```bash
 git clone https://github.com/SaleenaF/Superstore-Dashboard-Project.git
 cd Superstore-Dashboard-Project
-```
-
-### 2. Install required libraries
-
-```bash
 pip install -r requirements.txt
 ```
 
@@ -49,104 +38,106 @@ pip install -r requirements.txt
 
 ```
 Superstore-Dashboard-Project/
-│
-├── data/                  # Dataset files
-├── data_pipeline.py       # Data cleaning + analysis
-├── dashboard.py           # Interactive dashboard (to be built)
-├── requirements.txt       # Required libraries
-└── README.md              # Project documentation
+├── data/
+├── data_pipeline.py
+├── dashboard.py
+├── requirements.txt
+└── README.md
 ```
 
 ---
 
-## 👥 Team Workflow (VERY IMPORTANT)
+## 👥 Team Workflow
 
-### 🔹 Before starting work:
+## ⚡ Git Quick Guide
 
-Always pull the latest changes:
+### 🔁 Main Workflow (USE THIS)
+
+```bash
+git pull origin main
+git checkout -b feature-yourname
+
+# after coding
+git add .
+git commit -m "what you did"
+git push origin feature-yourname
+```
+
+👉 Then create a **Pull Request** on GitHub and merge
+
+---
+
+### ⚡ Quick Fix (ONLY small changes)
+
+```bash
+git pull origin main
+git add .
+git commit -m "small fix"
+git push origin main
+```
+
+---
+
+### ⚖️ When to Merge
+
+✅ Merge if:
+* Code runs without errors  
+* Project still works after your change  
+
+❌ Don’t merge if:
+* Work is unfinished  
+* You changed major/shared code  
+
+---
+
+### 🧠 Rule
+
+> Big change → branch + PR  
+> Small fix → push to main  
+
+---
+
+### 🔥 Golden Rule
 
 ```bash
 git pull origin main
 ```
 
-### 🔹 Create your own branch:
+---
 
-```bash
-git checkout -b feature-yourname
-```
+### 🧠 Shortcut to Remember
 
-Example:
-
-```bash
-git checkout -b feature-dashboard
-```
-
-### 🔹 After making changes:
-
-```bash
-git add .
-git commit -m "Describe your changes"
-git push origin feature-yourname
-```
-
-### 🔹 Submit a Pull Request (PR)
-
-* Go to GitHub  
-* Click **Compare & Pull Request**  
-* Request review before merging  
+> Pull → Branch → Work → Push → Merge
 
 ---
 
 ## 📊 Project Tasks
 
 ### ✔️ Data Cleaning
-
-* Handle missing values  
-* Fix data types  
-* Remove duplicates  
-* Create new features (Year, Month, etc.)  
+* Missing values, types, duplicates  
+* Create features (Year, Month)
 
 ### ✔️ EDA
-
 * Sales by Category  
 * Profit by Region  
 * Monthly trends  
-* Data visualizations (bar, line, pie, box)  
 
-### ✔️ Dashboard (Final Step)
-
-* Interactive filters (Year, Category)  
-* Multiple charts:  
-  * Bar chart  
-  * Line chart  
-  * Pie chart  
-  * Box plot  
-* Clean layout with clear titles  
+### ✔️ Dashboard
+* Filters (Year, Category)  
+* Charts: bar, line, pie, box  
 
 ---
 
 ## 🚀 Goal
 
-By completing this project, we aim to:
-
-* Practice real-world data analysis workflows  
-* Build a professional dashboard project for portfolios  
-* Learn collaborative development using GitHub  
+* Practice real-world data workflows  
+* Build a portfolio project  
+* Learn Git collaboration  
 
 ---
 
-## 💡 Notes
-
-* Do NOT overwrite others’ work  
-* Always use branches  
-* Keep commits clear and meaningful  
-
----
-
-## 📌 How to Run (after setup)
+## 📌 Run Project
 
 ```bash
 python data_pipeline.py
 ```
-
-(Dashboard will be added later)
