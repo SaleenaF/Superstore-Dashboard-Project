@@ -48,9 +48,11 @@ git clone https://github.com/SaleenaF/Superstore-Dashboard-Project.git
 
 ### 3. Open the terminal (Git Bash)
 
-1. Press **~ (tilde key)**  
+1. Press **Ctrl + ~** (tilde key)  
 2. Click the **dropdown arrow** in the terminal  
-3. Select **Git Bash**
+3. Select **Git Bash** (instead of PowerShell or Command Prompt)  
+
+If you don’t see Git Bash, download it from the [Git](https://git-scm.com) website, install, and restart VS Code.
 
 ---
 
