@@ -35,6 +35,8 @@ Follow these steps before running the project:
 ```bash
 git clone https://github.com/SaleenaF/Superstore-Dashboard-Project.git
 ```
+If you don’t have Git installed, download it from the [Git](https://git-scm.com) website.  
+Installing Git will also install **Git Bash**, which we will use in VS Code.
 
 ---
 
@@ -51,9 +53,6 @@ git clone https://github.com/SaleenaF/Superstore-Dashboard-Project.git
 1. Press **Ctrl + ~** (tilde key)  
 2. Click the **dropdown arrow** in the terminal  
 3. Select **Git Bash** (instead of PowerShell or Command Prompt)  
-
-If you don’t have Git installed, download it from the [Git](https://git-scm.com) website.  
-Installing Git will also install **Git Bash**, which we will use in VS Code.
 
 If you don’t have Python installed, download it from the [Python](https://www.python.org/downloads/) website.  
 Make sure to check **"Add Python to PATH"** during installation.
