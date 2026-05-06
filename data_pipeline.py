@@ -3,7 +3,7 @@ import pandas as pd
 import os
 
 # ==============================
-# STEP 1: Download Dataset cghfghf
+# STEP 1: Download Dataset
 # ==============================
 path = kagglehub.dataset_download("himanshuuike/superstore-sales-dataset")
 print("Dataset path:", path)

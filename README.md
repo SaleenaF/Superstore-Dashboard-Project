@@ -6,9 +6,9 @@ This project focuses on transforming raw retail sales data into meaningful busin
 
 We perform:
 
-* Data cleaning and preparation (data wrangling)
-* Exploratory Data Analysis (EDA)
-* Interactive dashboard development using Plotly Dash
+* Data cleaning and preparation (data wrangling)  
+* Exploratory Data Analysis (EDA)  
+* Interactive dashboard development using Plotly Dash  
 
 The goal is to simulate a real-world data analyst workflow and support data-driven decision-making.
 
@@ -20,9 +20,9 @@ Dataset used: **Superstore Sales Dataset (Kaggle)**
 
 It includes:
 
-* Sales, Profit, Category, Region
-* Order Dates (time-based analysis)
-* Customer and product-level data
+* Sales, Profit, Category, Region  
+* Order Dates (time-based analysis)  
+* Customer and product-level data  
 
 ---
 
@@ -33,8 +33,8 @@ Follow these steps before running the project:
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/YOUR-USERNAME/superstore-dashboard-project.git
-cd superstore-dashboard-project
+git clone https://github.com/SaleenaF/Superstore-Dashboard-Project.git
+cd Superstore-Dashboard-Project
 ```
 
 ### 2. Install required libraries
@@ -48,13 +48,13 @@ pip install -r requirements.txt
 ## 📁 Project Structure
 
 ```
-superstore-dashboard-project/
+Superstore-Dashboard-Project/
 │
 ├── data/                  # Dataset files
 ├── data_pipeline.py       # Data cleaning + analysis
-├── dashboard.py          # Interactive dashboard (to be built)
-├── requirements.txt      # Required libraries
-└── README.md             # Project documentation
+├── dashboard.py           # Interactive dashboard (to be built)
+├── requirements.txt       # Required libraries
+└── README.md              # Project documentation
 ```
 
 ---
@@ -91,9 +91,9 @@ git push origin feature-yourname
 
 ### 🔹 Submit a Pull Request (PR)
 
-* Go to GitHub
-* Click **Compare & Pull Request**
-* Request review before merging
+* Go to GitHub  
+* Click **Compare & Pull Request**  
+* Request review before merging  
 
 ---
 
@@ -101,28 +101,27 @@ git push origin feature-yourname
 
 ### ✔️ Data Cleaning
 
-* Handle missing values
-* Fix data types
-* Remove duplicates
-* Create new features (Year, Month, etc.)
+* Handle missing values  
+* Fix data types  
+* Remove duplicates  
+* Create new features (Year, Month, etc.)  
 
 ### ✔️ EDA
 
-* Sales by Category
-* Profit by Region
-* Monthly trends
-* Data visualizations (bar, line, pie, box)
+* Sales by Category  
+* Profit by Region  
+* Monthly trends  
+* Data visualizations (bar, line, pie, box)  
 
 ### ✔️ Dashboard (Final Step)
 
-* Interactive filters (Year, Category)
-* Multiple charts:
-
-  * Bar chart
-  * Line chart
-  * Pie chart
-  * Box plot
-* Clean layout with clear titles
+* Interactive filters (Year, Category)  
+* Multiple charts:  
+  * Bar chart  
+  * Line chart  
+  * Pie chart  
+  * Box plot  
+* Clean layout with clear titles  
 
 ---
 
@@ -130,17 +129,17 @@ git push origin feature-yourname
 
 By completing this project, we aim to:
 
-* Practice real-world data analysis workflows
-* Build a professional dashboard project for portfolios
-* Learn collaborative development using GitHub
+* Practice real-world data analysis workflows  
+* Build a professional dashboard project for portfolios  
+* Learn collaborative development using GitHub  
 
 ---
 
 ## 💡 Notes
 
-* Do NOT overwrite others’ work
-* Always use branches
-* Keep commits clear and meaningful
+* Do NOT overwrite others’ work  
+* Always use branches  
+* Keep commits clear and meaningful  
 
 ---
 
