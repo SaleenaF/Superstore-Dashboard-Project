@@ -34,10 +34,35 @@ Follow these steps before running the project:
 
 ```bash
 git clone https://github.com/SaleenaF/Superstore-Dashboard-Project.git
+```
+
+---
+
+### 2. Open the project in VS Code
+
+1. Open VS Code  
+2. Click **File → Open Folder**  
+3. Select the **Superstore-Dashboard-Project** folder you just cloned  
+
+---
+
+### 3. Open the terminal (Git Bash)
+
+1. Press **~ (tilde key)**  
+2. Click the **dropdown arrow** in the terminal  
+3. Select **Git Bash**
+
+---
+
+### 4. Navigate to the project folder (if needed)
+
+```bash
 cd Superstore-Dashboard-Project
 ```
 
-### 2. Install required libraries
+---
+
+### 5. Install required libraries
 
 ```bash
 pip install -r requirements.txt
@@ -62,12 +87,6 @@ Superstore-Dashboard-Project/
 ## 👥 Team Workflow (VERY IMPORTANT)
 
 ### ⚡ Git Quick Guide (READ THIS FIRST)
-
-### 🛠️ Before You Start
-
-Open VS Code → Press **~ (tilde key)** → Select **Git Bash** terminal
-
----
 
 ### 🔁 Daily Workflow
 
