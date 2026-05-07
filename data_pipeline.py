@@ -16,6 +16,10 @@ print("Files:", files)
 file_path = os.path.join(path, files[0])
 df = pd.read_csv(file_path)
 
+# Save ORIGINAL unclean dataset
+os.makedirs("data", exist_ok=True)
+df.to_csv("data/unclean_superstore_data.csv", index=False)
+
 # Preview
 print(df.head())
 print(df.info())
@@ -65,7 +69,7 @@ monthly_sales = df.groupby(['Year', 'Month'])['Sales'].sum().reset_index()
 print(monthly_sales.head())
 
 # ==============================
-# STEP 5: Save Clean Data (optional)
+# STEP 5: Save Clean Data
 # ==============================
 
 df.to_csv("data/cleaned_superstore_data.csv", index=False)
