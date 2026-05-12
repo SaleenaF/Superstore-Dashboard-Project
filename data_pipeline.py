@@ -27,6 +27,8 @@ df = pd.read_csv(file_path)
 
 # Save ORIGINAL unclean dataset
 os.makedirs("data", exist_ok=True)
+os.makedirs("visuals", exist_ok=True)
+
 df.to_csv("data/unclean_superstore_data.csv", index=False)
 
 # Preview
@@ -43,9 +45,11 @@ df['Ship Date'] = pd.to_datetime(df['Ship Date'])
 
 # Handle missing values
 print(df.isnull().sum())
+
 # Remove duplicates
 df = df.drop_duplicates()
 df = df.dropna()
+
 # Print the dimensions of the dataframe
 df.shape
 
@@ -83,24 +87,43 @@ print(monthly_sales.head())
 # Step 5: VISUALIZATIONS
 # ==============================
 
+# Universal Plotly Style
+plotly_template = 'plotly_white'
+main_color = 'skyblue'
+
 # BAR CHART
 # Get categories and values as separate lists
+sales_by_category = df.groupby('Category')['Sales'].sum()
+
 categories = sales_by_category.index.tolist()
 sales = sales_by_category.values.tolist()
 
-# Create bar chart
-plt.figure(figsize=(8, 5))
-plt.bar(categories, sales, color='skyblue', edgecolor='black')
-# Labels and title
-plt.xlabel('Category')
-plt.ylabel('Sales')
-plt.title('Sales by Category')
-# Show values on top of bars
-for i, v in enumerate(sales):
-    plt.text(i, v + 200, f'${v}', ha='center', fontweight='bold')
+# Plotly Bar Chart with matplotlib-style labels/stats
+bar_fig = px.bar(
+    x=categories,
+    y=sales,
+    labels={'x': 'Category', 'y': 'Sales'},
+    title='Sales by Category',
+    text=sales,
+    template=plotly_template
+)
 
-plt.tight_layout()
-plt.show()
+# Style bars similar to matplotlib version
+bar_fig.update_traces(
+    marker_color=main_color,
+    marker_line_color='black',
+    marker_line_width=1,
+    texttemplate='$%{text:.2f}',
+    textposition='outside'
+)
+
+bar_fig.update_layout(
+    width=800,
+    height=500
+)
+
+bar_fig.write_html("visuals/bar_chart.html")
+bar_fig.show()
 # ==============================
 
 # LINE CHART 1
@@ -108,18 +131,22 @@ plt.show()
 region = profit_by_region.index.tolist()
 profit = profit_by_region.values.tolist()
 
-plt.figure(figsize=(10, 6))
-# Labels and title
-plt.xlabel('Region')
-plt.ylabel('Profit')
-plt.title('Profit by Category')
+line_fig1 = px.line(
+    x=region,
+    y=profit,
+    markers=True,
+    labels={'x': 'Region', 'y': 'Profit'},
+    title='Profit by Region',
+    template=plotly_template
+)
 
-# Show values on top of bars
-for i, v in enumerate(profit):
-    plt.text(i, v + 200, f'${v}', ha='center', fontweight='bold')
-# Create the line plot
-plt.plot(region, profit, marker='o', linewidth=2, markersize=8, color='blue')
-plt.show()
+line_fig1.update_traces(
+    line=dict(width=3, color=main_color),
+    marker=dict(size=10, color=main_color)
+)
+
+line_fig1.write_html("visuals/line_chart_profit.html")
+line_fig1.show()
 # ==============================
 
 # LINE CHART 2
@@ -128,37 +155,47 @@ monthly_sales = df.groupby(
     pd.Grouper(key='Order Date', freq='ME')
 )['Sales'].sum().reset_index()
 
-# Create figure
-plt.figure(figsize=(12, 6))
-
-# Plot line chart
-plt.plot(
-    monthly_sales['Order Date'],
-    monthly_sales['Sales'],
-    marker='o',
-    linewidth=2,
-    markersize=6
+# Create Plotly line chart
+line_fig2 = px.line(
+    monthly_sales,
+    x='Order Date',
+    y='Sales',
+    markers=True,
+    title='Monthly Sales Trend',
+    template=plotly_template
 )
 
-# Labels and title
-plt.title('Monthly Sales Trend')
-plt.xlabel('Date')
-plt.ylabel('Sales')
+line_fig2.update_traces(
+    line=dict(width=3, color=main_color),
+    marker=dict(size=8, color=main_color)
+)
 
-plt.xticks(rotation=45) # Rotate dates for readability
-plt.grid(True)
-plt.tight_layout() # Adjust layout
-plt.show()
+line_fig2.update_layout(
+    xaxis_title='Date',
+    yaxis_title='Sales',
+    width=1000,
+    height=500
+)
+
+line_fig2.write_html("visuals/monthly_sales_trend.html")
+line_fig2.show()
 # ==============================
 
 # PIE CHART
 # Sales Distribution by Category
 # Create pie chart
-plt.figure(figsize=(8, 8))
-plt.pie(sales, labels=categories, autopct='%1.1f%%')
-plt.title('Sales Distribution by Category')
-plt.axis('equal') # Keeps it circular
-plt.show()
+pie_fig = px.pie(
+    names=categories,
+    values=sales,
+    title='Sales Distribution by Category',
+    template=plotly_template,
+    color_discrete_sequence=[main_color]
+)
+
+pie_fig.update_traces(textinfo='percent+label')
+
+pie_fig.write_html("visuals/pie_chart.html")
+pie_fig.show()
 # ==============================
 
 #print(df.columns.tolist())
@@ -175,14 +212,36 @@ fig = px.choropleth(
     color='Sales',
     scope='usa',
     color_continuous_scale='Blues',
-    title='Sales by U.S. State'
+    title='Sales by U.S. State',
+    template=plotly_template
 )
+
+fig.write_html("visuals/state_sales_map.html")
 fig.show()
 # ==============================
 
+# BOXPLOT
+# For sales
+box_fig = px.box(
+    df,
+    y='Sales',
+    title='Sales Values',
+    template=plotly_template
+)
+
+box_fig.update_traces(
+    marker_color=main_color,
+    line_color=main_color
+)
+
+box_fig.write_html("visuals/boxplot_sales.html")
+box_fig.show()
+
 # ==============================
-# Save Clean Data
+# Step 6: SAVE CLEAN DATA
 # ==============================
 
 df.to_csv("data/cleaned_superstore_data.csv", index=False)
+
 print(df.shape)
+print("All visualizations saved to visuals folder.")
