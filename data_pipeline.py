@@ -71,6 +71,10 @@ df['Profit Margin'] = df['Profit'] / df['Sales'].replace(0, 1)
 total_sales = df['Sales'].sum()
 print("Total Sales:", total_sales)
 
+# Basic Statistics
+print(df['Sales'].describe())
+print(df['Profit'].describe())
+
 # Sales by Category
 sales_by_category = df.groupby('Category')['Sales'].sum()
 print(sales_by_category)
@@ -126,27 +130,31 @@ bar_fig.write_html("visuals/bar_chart.html")
 bar_fig.show()
 # ==============================
 
-# LINE CHART 1
-# Get region and profit as separate lists
-region = profit_by_region.index.tolist()
-profit = profit_by_region.values.tolist()
+# HEATMAP
+# Create pivot table for heatmap
+heatmap_data = df.pivot_table(
+    values='Profit',
+    index='Region',
+    columns='Category',
+    aggfunc='sum'
+)
 
-line_fig1 = px.line(
-    x=region,
-    y=profit,
-    markers=True,
-    labels={'x': 'Region', 'y': 'Profit'},
-    title='Profit by Region',
+# Create heatmap
+heatmap_fig = px.imshow(
+    heatmap_data,
+    text_auto=True,
+    color_continuous_scale='Blues',
+    title='Profit by Region and Category',
     template=plotly_template
 )
 
-line_fig1.update_traces(
-    line=dict(width=3, color=main_color),
-    marker=dict(size=10, color=main_color)
+heatmap_fig.update_layout(
+    width=800,
+    height=500
 )
 
-line_fig1.write_html("visuals/line_chart_profit.html")
-line_fig1.show()
+heatmap_fig.write_html("visuals/heatmap_profit.html")
+heatmap_fig.show()
 # ==============================
 
 # LINE CHART 2
