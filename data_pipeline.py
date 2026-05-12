@@ -102,17 +102,17 @@ sales_by_category = df.groupby('Category')['Sales'].sum()
 categories = sales_by_category.index.tolist()
 sales = sales_by_category.values.tolist()
 
-# Blue Plotly Bar Chart
-barChart = px.bar(x=categories, y=sales, labels={'x': 'Category', 'y': 'Sales'},
-                  title='Sales by Category', text=sales, template=col1,
-                  color_discrete_sequence=[col2])
+barChart = px.bar(
+    x=categories, y=sales,
+    labels={'x': 'Category', 'y': 'Sales'},
+    title='Sales by Category',
+    text=sales,
+    template=col1,
+    color_discrete_sequence=[col2]
+)
 
-# Put labels above bars
-barChart.update_traces(texttemplate='$%{text:.2f}', textposition='outside')
-
-barChart.update_layout(width=800, height=500)
-
-barChart.write_html("visuals/bar chart.html")
+barChart.update_traces(textposition='outside') # Make info sit on top of bars
+barChart.write_html("visuals/bar_chart.html")
 barChart.show()
 # ==============================
 
@@ -120,64 +120,78 @@ barChart.show()
 # Create pivot table for heatmap
 heat = df.pivot_table(values='Profit', index='Region', columns='Category', aggfunc='sum')
 
-# Create heatmap
-heatMap = px.imshow(heat, text_auto=True, color_continuous_scale='Blues',
-                    title='Profit by Region and Category', template=col1)
-
-heatMap.update_layout(width=800, height=500)
+heatMap = px.imshow(
+    heat,
+    text_auto=True,
+    color_continuous_scale='Blues',
+    title='Profit by Region and Category',
+    template=col1
+)
 
 heatMap.write_html("visuals/heatmap.html")
 heatMap.show()
 # ==============================
 
-# LINE CHART 2
-# Group sales by month
+# LINE CHART
 monthly_sales = df.groupby(pd.Grouper(key='Order Date', freq='ME'))['Sales'].sum().reset_index()
 
-# Create Plotly line chart
-lineChart = px.line(monthly_sales, x='Order Date', y='Sales', markers=True,
-                    title='Monthly Sales Trend', template=col1, color_discrete_sequence=[col2])
+lineChart = px.line(
+    monthly_sales,
+    x='Order Date',
+    y='Sales',
+    markers=True,
+    title='Monthly Sales Trend',
+    template=col1,
+    color_discrete_sequence=[col2]
+)
 
-lineChart.update_layout(xaxis_title='Date', yaxis_title='Sales', width=1000, height=500)
-
-lineChart.write_html("visuals/line chart.html")
+lineChart.write_html("visuals/line_chart.html")
 lineChart.show()
 # ==============================
 
 # PIE CHART
-# Sales Distribution by Category
-# Create pie chart
-pieChart = px.pie(names=categories, values=sales, title='Sales Distribution by Category',
-                  template=col1, color_discrete_sequence=[col2])
+pieChart = px.pie(
+    names=categories,
+    values=sales,
+    title='Sales Distribution by Category',
+    template=col1,
+    color_discrete_sequence=[col2]
+)
 
-pieChart.write_html("visuals/pie chart.html")
+pieChart.write_html("visuals/pie_chart.html")
 pieChart.show()
 # ==============================
 
-#print(df.columns.tolist())
-
 # SALES BY STATE MAP
-# Group sales by state
-sales = df.groupby('State/Province')['Sales'].sum().reset_index()
+state_sales = df.groupby('State/Province')['Sales'].sum().reset_index()
 
-# Create choropleth map
-fig = px.choropleth(sales, locations='State/Province', locationmode='USA-states',
-                    color='Sales', scope='usa', color_continuous_scale='Blues',
-                    title='Sales by U.S. State', template=col1)
+fig = px.choropleth(
+    state_sales,
+    locations='State/Province',
+    locationmode='USA-states',
+    color='Sales',
+    scope='usa',
+    color_continuous_scale='Blues',
+    title='Sales by U.S. State',
+    template=col1
+)
 
-fig.write_html("visuals/choropleth map.html")
+fig.write_html("visuals/choropleth_map.html")
 fig.show()
 # ==============================
 
 # BOXPLOT
-# For sales
-boxPlot = px.box(df, y='Sales', title='Sales Values', template=col1,
-                 color_discrete_sequence=[col2], points='outliers')
-
-boxPlot.update_layout(height=600)
+boxPlot = px.box(
+    df,
+    y='Sales',
+    title='Sales Values',
+    template=col1,
+    color_discrete_sequence=[col2]
+)
 
 boxPlot.write_html("visuals/boxplot.html")
 boxPlot.show()
+# ==============================
 
 # ==============================
 # Step 6: SAVE CLEAN DATA
