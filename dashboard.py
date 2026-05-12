@@ -138,31 +138,92 @@ def update_dashboard(selected_year):
 # ==============================
 
 def export_static_dashboard():
-    """Creates GitHub Pages version automatically"""
+    """Creates GitHub Pages version using SAME styled charts as Dash"""
 
     filtered_df = df
 
+    # ==============================
+    # BAR CHART (same as Dash)
+    # ==============================
     sales_by_category = filtered_df.groupby('Category')['Sales'].sum()
     categories = sales_by_category.index.tolist()
     sales = sales_by_category.values.tolist()
 
-    barChart = px.bar(x=categories, y=sales, title='Sales by Category')
+    barChart = px.bar(
+        x=categories,
+        y=sales,
+        title='Sales by Category',
+        text=sales
+    )
+    barChart.update_traces(textposition='outside')
 
-    heat = filtered_df.pivot_table(values='Profit', index='Region', columns='Category', aggfunc='sum')
-    heatMap = px.imshow(heat, title='Profit by Region and Category')
+    # ==============================
+    # HEATMAP (with numbers)
+    # ==============================
+    heat = filtered_df.pivot_table(
+        values='Profit',
+        index='Region',
+        columns='Category',
+        aggfunc='sum'
+    )
 
-    monthly_sales = filtered_df.groupby(pd.Grouper(key='Order Date', freq='ME'))['Sales'].sum().reset_index()
-    lineChart = px.line(monthly_sales, x='Order Date', y='Sales', title='Monthly Sales Trend')
+    heatMap = px.imshow(
+        heat,
+        text_auto=True,   # THIS fixes missing numbers
+        title='Profit by Region and Category'
+    )
 
-    pieChart = px.pie(names=categories, values=sales, title='Sales Distribution by Category')
+    # ==============================
+    # LINE CHART
+    # ==============================
+    monthly_sales = filtered_df.groupby(
+        pd.Grouper(key='Order Date', freq='ME')
+    )['Sales'].sum().reset_index()
 
+    lineChart = px.line(
+        monthly_sales,
+        x='Order Date',
+        y='Sales',
+        markers=True,
+        title='Monthly Sales Trend'
+    )
+
+    # ==============================
+    # PIE CHART (your fixed colors)
+    # ==============================
+    pieChart = px.pie(
+        names=categories,
+        values=sales,
+        title='Sales Distribution by Category',
+        color_discrete_sequence=px.colors.sequential.Plasma
+    )
+
+    # ==============================
+    # MAP
+    # ==============================
     state_sales = filtered_df.groupby('State/Province')['Sales'].sum().reset_index()
-    mapChart = px.choropleth(state_sales, locations='State/Province',
-                             locationmode='USA-states', color='Sales',
-                             scope='usa', title='Sales by U.S. State')
 
-    boxPlot = px.box(filtered_df, y='Sales', title='Sales Values')
+    mapChart = px.choropleth(
+        state_sales,
+        locations='State/Province',
+        locationmode='USA-states',
+        color='Sales',
+        scope='usa',
+        title='Sales by U.S. State'
+    )
 
+    # ==============================
+    # BOXPLOT
+    # ==============================
+    boxPlot = px.box(
+        filtered_df,
+        y='Sales',
+        title='Sales Values'
+    )
+
+    # ==============================
+    # EXPORT HTML (fixed)
+    # ==============================
     html_content = f"""
     <html>
     <head><title>Superstore Dashboard</title></head>
@@ -181,7 +242,6 @@ def export_static_dashboard():
         f.write(html_content)
 
     print("GitHub Pages dashboard saved to docs/index.html")
-
 
 # ==============================
 # RUN APP
