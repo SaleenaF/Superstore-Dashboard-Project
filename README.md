@@ -5,24 +5,37 @@
 This project focuses on transforming raw retail sales data into meaningful business insights through data analysis and an interactive dashboard.
 
 We perform:
-
-* Data cleaning and preparation (data wrangling)  
-* Exploratory Data Analysis (EDA)  
-* Interactive dashboard development using Plotly Dash  
+* Data cleaning and preparation (data wrangling)
+* Exploratory Data Analysis (EDA)
+* Interactive dashboard development using Plotly Dash + HTML export
 
 The goal is to simulate a real-world data analyst workflow and support data-driven decision-making.
 
 ---
 
+## 🌐 Live Dashboard
+
+You can view the interactive dashboard here (GitHub Pages):
+
+👉 https://saleenaf.github.io/Superstore-Dashboard-Project/
+
+The dashboard is fully interactive and includes:
+* Year filtering
+* Sales analysis by category
+* Profit heatmap
+* Time-based trend analysis
+* Geographic sales distribution
+
+---
+
 ## 📂 Dataset
 
-Dataset used: **Superstore Sales Dataset (Kaggle)**
+Dataset used: Superstore Sales Dataset (Kaggle)
 
 It includes:
-
-* Sales, Profit, Category, Region  
-* Order Dates (time-based analysis)  
-* Customer and product-level data  
+* Sales, Profit, Category, Region
+* Order Dates (time-based analysis)
+* Customer and product-level data
 
 ---
 
@@ -32,75 +45,68 @@ Follow these steps before running the project:
 
 ### 1. Clone the repository
 
-```bash
 git clone https://github.com/SaleenaF/Superstore-Dashboard-Project.git
-```
-If you don’t have Git installed, download it from the [Git](https://git-scm.com) website.  
-Installing Git will also install **Git Bash**, which we will use in VS Code.
+
+If you don’t have Git installed, download it from https://git-scm.com  
+Installing Git will also install Git Bash, which we will use in VS Code.
 
 ---
 
 ### 2. Open the project in VS Code
 
-1. Open VS Code  
-2. Click **File → Open Folder**  
-3. Select the **Superstore-Dashboard-Project** folder you just cloned  
+1. Open VS Code
+2. Click File → Open Folder
+3. Select the Superstore-Dashboard-Project folder you just cloned
 
 ---
 
 ### 3. Open the terminal (Git Bash)
 
-1. Press **Ctrl + ~** (tilde key)  
-2. Click the **dropdown arrow** in the terminal  
-3. Select **Git Bash** (instead of PowerShell or Command Prompt)  
+1. Press Ctrl + ~ (tilde key)
+2. Click the dropdown arrow in the terminal
+3. Select Git Bash (instead of PowerShell or Command Prompt)
 
-If you don’t have Python installed, download it from the [Python](https://www.python.org/downloads/) website.  
-Make sure to check **"Add Python to PATH"** during installation.
+If you don’t have Python installed, download it from https://www.python.org/downloads/  
+Make sure to check "Add Python to PATH" during installation.
 
 ---
 
 ### 4. Navigate to the project folder (if needed)
 
-```bash
 cd Superstore-Dashboard-Project
-```
 
 ---
 
 ### 5. Install required libraries
 
-```bash
 pip install -r requirements.txt
-```
+
 If you get errors, try upgrading pip:
 
-```bash
 python -m pip install --upgrade pip
-```
 
 ---
 
 ## 📁 Project Structure
 
-```
 Superstore-Dashboard-Project/
 │
 ├── data/                  # Dataset files
-├── data_pipeline.py       # Data cleaning + analysis
-├── dashboard.py           # Interactive dashboard (to be built)
+├── visuals/               # Generated charts + dashboard HTML
+├── docs/                  # GitHub Pages deployment folder
+├── data_pipeline.py       # Data cleaning + feature engineering
+├── dashboard.py           # Dash app + HTML export
 ├── requirements.txt       # Required libraries
 └── README.md              # Project documentation
-```
 
 ---
 
 ## 👥 Team Workflow (VERY IMPORTANT)
 
-### ⚡ Git Quick Guide (READ THIS FIRST)
+### ⚡ Git Quick Guide
 
 ### 🔁 Daily Workflow
 
-```bash
 # 1. Always start here
 git pull origin main
 
@@ -111,63 +117,51 @@ git checkout -b feature-yourname
 git add .
 git commit -m "what you did"
 git push origin feature-yourname
-```
 
-👉 Then:
-
-1. Go to the GitHub repo  
-2. Click **Compare & Pull Request**  
-3. Click **Create Pull Request**  
-4. Click **Merge**
+Then:
+1. Go to GitHub repo
+2. Click Compare & Pull Request
+3. Click Create Pull Request
+4. Click Merge
 
 ---
 
 ### ⚡ Fast Option (Small Fixes Only)
 
-```bash
 git pull origin main
 git add .
 git commit -m "small fix"
 git push origin main
-```
-
-👉 Only use this for very small, safe changes (like typos)
 
 ---
 
 ### ⚖️ When Can You Merge?
 
 You can merge if:
-
-* Your code runs **without errors**
+* Your code runs without errors
 * It doesn’t break someone else’s work
 * The project still runs after your change
-
-💡 Simple rule:  
-> If someone pulls your code and their project still works, you're good
 
 ---
 
 ### 🚫 When NOT to Merge
 
-* Your code is unfinished  
-* You changed large/shared files and aren’t sure  
-* You think it *might* break something  
+* Your code is unfinished
+* You changed large/shared files and aren’t sure
+* You think it might break something
 
 ---
 
-### 🧠 Project Rule (IMPORTANT)
+### 🧠 Project Rule
 
-> Big feature → use a branch + PR  
-> Small safe fix → you *can* push to main (but branches are safer)
+Big feature → use a branch + PR
+Small safe fix → can push to main (but branches are safer)
 
 ---
 
 ### 🔥 Golden Rule
 
-```bash
 git pull origin main
-```
 
 Always do this before starting work.
 
@@ -175,17 +169,13 @@ Always do this before starting work.
 
 ### 🧠 Memory Trick
 
-> Pull → Branch → Work → Add → Commit → Push → PR → Merge
+Pull → Branch → Work → Add → Commit → Push → PR → Merge
 
 ---
 
 ### ❓ If something breaks
 
-Run:
-
-```bash
 git pull origin main
-```
 
 If you're stuck, ask the group before pushing.
 
@@ -194,53 +184,72 @@ If you're stuck, ask the group before pushing.
 ## 📊 Project Tasks
 
 ### ✔️ Data Cleaning
+* Handle missing values
+* Fix data types
+* Remove duplicates
+* Create new features (Year, Month, Profit Margin)
 
-* Handle missing values  
-* Fix data types  
-* Remove duplicates  
-* Create new features (Year, Month, etc.)  
+---
 
 ### ✔️ EDA
+* Sales by Category
+* Profit by Region
+* Monthly trends
+* Descriptive statistics
+* Visualizations (bar, line, pie, heatmap, box plot)
 
-* Sales by Category  
-* Profit by Region  
-* Monthly trends  
-* Data visualizations (bar, line, pie, box)  
+---
 
 ### ✔️ Dashboard (Final Step)
 
-* Interactive filters (Year, Category)  
-* Multiple charts:  
-  * Bar chart  
-  * Line chart  
-  * Pie chart  
-  * Box plot  
-* Clean layout with clear titles  
+Built using Plotly Dash + HTML export for deployment.
+
+Features:
+* Interactive Year filter (including "All Years")
+* Bar chart → Sales by Category
+* Line chart → Monthly Sales Trend
+* Pie chart → Sales Distribution
+* Heatmap → Profit by Region and Category
+* Choropleth map → Sales by U.S. State
+* Box plot → Sales distribution and outliers
+
+The dashboard is available in two formats:
+* Dash app (local interactive version)
+* Static HTML dashboard (GitHub Pages deployment)
+
+---
+
+## 📈 Key Insights (EDA Findings)
+
+From the analysis:
+* Technology and Office Supplies generate strong revenue
+* Sales show seasonal monthly trends
+* Certain regions outperform others in profit
+* Outliers exist in sales distribution indicating high-value transactions
 
 ---
 
 ## 🚀 Goal
 
 By completing this project, we aim to:
-
-* Practice real-world data analysis workflows  
-* Build a professional dashboard project for portfolios  
-* Learn collaborative development using GitHub  
-
----
-
-## 💡 Notes
-
-* Do NOT overwrite others’ work  
-* Always use branches when possible  
-* Keep commits clear and meaningful  
+* Practice real-world data analysis workflows
+* Build a professional dashboard project for portfolios
+* Learn collaborative development using GitHub
 
 ---
 
-## 📌 How to Run (after setup)
+## 💡 Technologies Used
 
-```bash
+* Python (Pandas, NumPy)
+* Plotly (Express + Graph Objects)
+* Dash (Interactive dashboard)
+* Git & GitHub
+* HTML (for deployment)
+
+---
+
+## 📌 How to Run
+
 python data_pipeline.py
-```
 
-(Dashboard will be added later)
+python dashboard.py

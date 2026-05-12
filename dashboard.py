@@ -7,7 +7,6 @@ from dash import Dash, dcc, html, Input, Output
 # ==============================
 
 df = pd.read_csv("data/cleaned_superstore_data.csv")
-
 df['Order Date'] = pd.to_datetime(df['Order Date'])
 
 # ==============================
@@ -24,7 +23,6 @@ app.layout = html.Div([
 
     html.H1("Superstore Sales Dashboard"),
 
-    # FILTER
     html.Label("Select Year:"),
 
     dcc.Dropdown(
@@ -34,24 +32,12 @@ app.layout = html.Div([
         id='year_filter'
     ),
 
-    # BAR CHART
     dcc.Graph(id='bar_chart'),
-
-    # HEATMAP
     dcc.Graph(id='heatmap'),
-
-    # LINE CHART
     dcc.Graph(id='line_chart'),
-
-    # PIE CHART
     dcc.Graph(id='pie_chart'),
-
-    # MAP
     dcc.Graph(id='map_chart'),
-
-    # BOXPLOT
     dcc.Graph(id='box_plot')
-
 ])
 
 # ==============================
@@ -77,29 +63,20 @@ def update_dashboard(selected_year):
     else:
         filtered_df = df[df['Year'] == selected_year]
 
-    # ==============================
     # BAR CHART
-    # ==============================
-
     sales_by_category = filtered_df.groupby('Category')['Sales'].sum()
-
     categories = sales_by_category.index.tolist()
     sales = sales_by_category.values.tolist()
 
     barChart = px.bar(
         x=categories,
         y=sales,
-        labels={'x': 'Category', 'y': 'Sales'},
         title='Sales by Category',
         text=sales
     )
-
     barChart.update_traces(textposition='outside')
 
-    # ==============================
     # HEATMAP
-    # ==============================
-
     heat = filtered_df.pivot_table(
         values='Profit',
         index='Region',
@@ -113,10 +90,7 @@ def update_dashboard(selected_year):
         title='Profit by Region and Category'
     )
 
-    # ==============================
     # LINE CHART
-    # ==============================
-
     monthly_sales = filtered_df.groupby(
         pd.Grouper(key='Order Date', freq='ME')
     )['Sales'].sum().reset_index()
@@ -129,10 +103,7 @@ def update_dashboard(selected_year):
         title='Monthly Sales Trend'
     )
 
-    # ==============================
-    # PIE CHART
-    # ==============================
-
+    # PIE CHART (fixed colors)
     pieChart = px.pie(
         names=categories,
         values=sales,
@@ -140,10 +111,7 @@ def update_dashboard(selected_year):
         color_discrete_sequence=px.colors.sequential.Plasma
     )
 
-    # ==============================
-    # SALES BY STATE MAP
-    # ==============================
-
+    # MAP
     state_sales = filtered_df.groupby('State/Province')['Sales'].sum().reset_index()
 
     mapChart = px.choropleth(
@@ -155,28 +123,70 @@ def update_dashboard(selected_year):
         title='Sales by U.S. State'
     )
 
-    # ==============================
     # BOXPLOT
-    # ==============================
-
     boxPlot = px.box(
         filtered_df,
         y='Sales',
         title='Sales Values'
     )
 
-    return (
-        barChart,
-        heatMap,
-        lineChart,
-        pieChart,
-        mapChart,
-        boxPlot
-    )
+    return barChart, heatMap, lineChart, pieChart, mapChart, boxPlot
+
 
 # ==============================
-# RUN DASHBOARD
+# EXPORT STATIC HTML FOR GITHUB PAGES
+# ==============================
+
+def export_static_dashboard():
+    """Creates GitHub Pages version automatically"""
+
+    filtered_df = df
+
+    sales_by_category = filtered_df.groupby('Category')['Sales'].sum()
+    categories = sales_by_category.index.tolist()
+    sales = sales_by_category.values.tolist()
+
+    barChart = px.bar(x=categories, y=sales, title='Sales by Category')
+
+    heat = filtered_df.pivot_table(values='Profit', index='Region', columns='Category', aggfunc='sum')
+    heatMap = px.imshow(heat, title='Profit by Region and Category')
+
+    monthly_sales = filtered_df.groupby(pd.Grouper(key='Order Date', freq='ME'))['Sales'].sum().reset_index()
+    lineChart = px.line(monthly_sales, x='Order Date', y='Sales', title='Monthly Sales Trend')
+
+    pieChart = px.pie(names=categories, values=sales, title='Sales Distribution by Category')
+
+    state_sales = filtered_df.groupby('State/Province')['Sales'].sum().reset_index()
+    mapChart = px.choropleth(state_sales, locations='State/Province',
+                             locationmode='USA-states', color='Sales',
+                             scope='usa', title='Sales by U.S. State')
+
+    boxPlot = px.box(filtered_df, y='Sales', title='Sales Values')
+
+    html_content = f"""
+    <html>
+    <head><title>Superstore Dashboard</title></head>
+    <body>
+    {barChart.to_html(full_html=False, include_plotlyjs='cdn')}
+    {heatMap.to_html(full_html=False, include_plotlyjs=False)}
+    {lineChart.to_html(full_html=False, include_plotlyjs=False)}
+    {pieChart.to_html(full_html=False, include_plotlyjs=False)}
+    {mapChart.to_html(full_html=False, include_plotlyjs=False)}
+    {boxPlot.to_html(full_html=False, include_plotlyjs=False)}
+    </body>
+    </html>
+    """
+
+    with open("docs/index.html", "w", encoding="utf-8") as f:
+        f.write(html_content)
+
+    print("GitHub Pages dashboard saved to docs/index.html")
+
+
+# ==============================
+# RUN APP
 # ==============================
 
 if __name__ == '__main__':
+    export_static_dashboard()
     app.run(debug=True)
