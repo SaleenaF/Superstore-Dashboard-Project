@@ -112,7 +112,7 @@ barChart.update_traces(texttemplate='$%{text:.2f}', textposition='outside')
 
 barChart.update_layout(width=800, height=500)
 
-barChart.write_html("visuals/bar_chart.html")
+barChart.write_html("visuals/bar chart.html")
 barChart.show()
 # ==============================
 
@@ -126,7 +126,7 @@ heatMap = px.imshow(heat, text_auto=True, color_continuous_scale='Blues',
 
 heatMap.update_layout(width=800, height=500)
 
-heatMap.write_html("visuals/heatmap_profit.html")
+heatMap.write_html("visuals/heatmap.html")
 heatMap.show()
 # ==============================
 
@@ -140,7 +140,7 @@ lineChart = px.line(monthly_sales, x='Order Date', y='Sales', markers=True,
 
 lineChart.update_layout(xaxis_title='Date', yaxis_title='Sales', width=1000, height=500)
 
-lineChart.write_html("visuals/monthly_sales_trend.html")
+lineChart.write_html("visuals/line chart.html")
 lineChart.show()
 # ==============================
 
@@ -150,7 +150,7 @@ lineChart.show()
 pieChart = px.pie(names=categories, values=sales, title='Sales Distribution by Category',
                   template=col1, color_discrete_sequence=[col2])
 
-pieChart.write_html("visuals/pie_chart.html")
+pieChart.write_html("visuals/pie chart.html")
 pieChart.show()
 # ==============================
 
@@ -165,7 +165,7 @@ fig = px.choropleth(sales, locations='State/Province', locationmode='USA-states'
                     color='Sales', scope='usa', color_continuous_scale='Blues',
                     title='Sales by U.S. State', template=col1)
 
-fig.write_html("visuals/sales_map.html")
+fig.write_html("visuals/choropleth map.html")
 fig.show()
 # ==============================
 
@@ -176,7 +176,7 @@ boxPlot = px.box(df, y='Sales', title='Sales Values', template=col1,
 
 boxPlot.update_layout(height=600)
 
-boxPlot.write_html("visuals/boxplot_sales.html")
+boxPlot.write_html("visuals/boxplot.html")
 boxPlot.show()
 
 # ==============================
