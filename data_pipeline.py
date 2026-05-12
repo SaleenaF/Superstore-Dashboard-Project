@@ -92,8 +92,8 @@ print(monthly_sales.head())
 # ==============================
 
 # Universal Plotly Style
-plotly_template = 'plotly_white'
-main_color = 'skyblue'
+col1 = 'plotly_white'
+col2 = 'skyblue'
 
 # BAR CHART
 # Get categories and values as separate lists
@@ -102,148 +102,82 @@ sales_by_category = df.groupby('Category')['Sales'].sum()
 categories = sales_by_category.index.tolist()
 sales = sales_by_category.values.tolist()
 
-# Plotly Bar Chart with matplotlib-style labels/stats
-bar_fig = px.bar(
-    x=categories,
-    y=sales,
-    labels={'x': 'Category', 'y': 'Sales'},
-    title='Sales by Category',
-    text=sales,
-    template=plotly_template
-)
+# Blue Plotly Bar Chart
+barChart = px.bar(x=categories, y=sales, labels={'x': 'Category', 'y': 'Sales'},
+                  title='Sales by Category', text=sales, template=col1,
+                  color_discrete_sequence=[col2])
 
-# Style bars similar to matplotlib version
-bar_fig.update_traces(
-    marker_color=main_color,
-    marker_line_color='black',
-    marker_line_width=1,
-    texttemplate='$%{text:.2f}',
-    textposition='outside'
-)
+# Put labels above bars
+barChart.update_traces(texttemplate='$%{text:.2f}', textposition='outside')
 
-bar_fig.update_layout(
-    width=800,
-    height=500
-)
+barChart.update_layout(width=800, height=500)
 
-bar_fig.write_html("visuals/bar_chart.html")
-bar_fig.show()
+barChart.write_html("visuals/bar_chart.html")
+barChart.show()
 # ==============================
 
 # HEATMAP
 # Create pivot table for heatmap
-heatmap_data = df.pivot_table(
-    values='Profit',
-    index='Region',
-    columns='Category',
-    aggfunc='sum'
-)
+heat = df.pivot_table(values='Profit', index='Region', columns='Category', aggfunc='sum')
 
 # Create heatmap
-heatmap_fig = px.imshow(
-    heatmap_data,
-    text_auto=True,
-    color_continuous_scale='Blues',
-    title='Profit by Region and Category',
-    template=plotly_template
-)
+heatMap = px.imshow(heat, text_auto=True, color_continuous_scale='Blues',
+                    title='Profit by Region and Category', template=col1)
 
-heatmap_fig.update_layout(
-    width=800,
-    height=500
-)
+heatMap.update_layout(width=800, height=500)
 
-heatmap_fig.write_html("visuals/heatmap_profit.html")
-heatmap_fig.show()
+heatMap.write_html("visuals/heatmap_profit.html")
+heatMap.show()
 # ==============================
 
 # LINE CHART 2
 # Group sales by month
-monthly_sales = df.groupby(
-    pd.Grouper(key='Order Date', freq='ME')
-)['Sales'].sum().reset_index()
+monthly_sales = df.groupby(pd.Grouper(key='Order Date', freq='ME'))['Sales'].sum().reset_index()
 
 # Create Plotly line chart
-line_fig2 = px.line(
-    monthly_sales,
-    x='Order Date',
-    y='Sales',
-    markers=True,
-    title='Monthly Sales Trend',
-    template=plotly_template
-)
+lineChart = px.line(monthly_sales, x='Order Date', y='Sales', markers=True,
+                    title='Monthly Sales Trend', template=col1, color_discrete_sequence=[col2])
 
-line_fig2.update_traces(
-    line=dict(width=3, color=main_color),
-    marker=dict(size=8, color=main_color)
-)
+lineChart.update_layout(xaxis_title='Date', yaxis_title='Sales', width=1000, height=500)
 
-line_fig2.update_layout(
-    xaxis_title='Date',
-    yaxis_title='Sales',
-    width=1000,
-    height=500
-)
-
-line_fig2.write_html("visuals/monthly_sales_trend.html")
-line_fig2.show()
+lineChart.write_html("visuals/monthly_sales_trend.html")
+lineChart.show()
 # ==============================
 
 # PIE CHART
 # Sales Distribution by Category
 # Create pie chart
-pie_fig = px.pie(
-    names=categories,
-    values=sales,
-    title='Sales Distribution by Category',
-    template=plotly_template,
-    color_discrete_sequence=[main_color]
-)
+pieChart = px.pie(names=categories, values=sales, title='Sales Distribution by Category',
+                  template=col1, color_discrete_sequence=[col2])
 
-pie_fig.update_traces(textinfo='percent+label')
-
-pie_fig.write_html("visuals/pie_chart.html")
-pie_fig.show()
+pieChart.write_html("visuals/pie_chart.html")
+pieChart.show()
 # ==============================
 
 #print(df.columns.tolist())
 
 # SALES BY STATE MAP
-# Group sales by state/province
-state_sales = df.groupby('State/Province')['Sales'].sum().reset_index()
+# Group sales by state
+sales = df.groupby('State/Province')['Sales'].sum().reset_index()
 
 # Create choropleth map
-fig = px.choropleth(
-    state_sales,
-    locations='State/Province',
-    locationmode='USA-states',
-    color='Sales',
-    scope='usa',
-    color_continuous_scale='Blues',
-    title='Sales by U.S. State',
-    template=plotly_template
-)
+fig = px.choropleth(sales, locations='State/Province', locationmode='USA-states',
+                    color='Sales', scope='usa', color_continuous_scale='Blues',
+                    title='Sales by U.S. State', template=col1)
 
-fig.write_html("visuals/state_sales_map.html")
+fig.write_html("visuals/sales_map.html")
 fig.show()
 # ==============================
 
 # BOXPLOT
 # For sales
-box_fig = px.box(
-    df,
-    y='Sales',
-    title='Sales Values',
-    template=plotly_template
-)
+boxPlot = px.box(df, y='Sales', title='Sales Values', template=col1,
+                 color_discrete_sequence=[col2], points='outliers')
 
-box_fig.update_traces(
-    marker_color=main_color,
-    line_color=main_color
-)
+boxPlot.update_layout(height=600)
 
-box_fig.write_html("visuals/boxplot_sales.html")
-box_fig.show()
+boxPlot.write_html("visuals/boxplot_sales.html")
+boxPlot.show()
 
 # ==============================
 # Step 6: SAVE CLEAN DATA
