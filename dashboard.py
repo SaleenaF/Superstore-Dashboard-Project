@@ -200,12 +200,15 @@ def update_dashboard(selected_year):
 
     pie_data = filtered_df.groupby('Category')['Sales'].sum().reset_index()
 
+    # Define your colors in the exact order you want them to appear
+    my_colors = ["#efff43", "#495eff", '#e74c3c', "#ffcc00"] 
+
     pieChart = px.pie(
         pie_data,
         names='Category',
         values='Sales',
         title='Sales Distribution by Category',
-        color_discrete_sequence=px.colors.sequential.Plasma
+        color_discrete_sequence=my_colors  # Direct list injection
     )
 
     # ==============================
