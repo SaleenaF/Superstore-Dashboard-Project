@@ -200,7 +200,7 @@ def update_dashboard(selected_year):
 
     pie_data = filtered_df.groupby('Category')['Sales'].sum().reset_index()
 
-    # Define your colors in the exact order you want them to appear
+    # My custom colours
     my_colors = ["#efff43", "#495eff", '#e74c3c', "#ffcc00"] 
 
     pieChart = px.pie(
