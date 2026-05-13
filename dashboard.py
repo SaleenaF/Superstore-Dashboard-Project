@@ -3,42 +3,57 @@ import plotly.express as px
 from dash import Dash, dcc, html, Input, Output
 
 # ==============================
-# LOAD CLEANED DATA
+# LOAD DATA
 # ==============================
 
 df = pd.read_csv("data/cleaned_superstore_data.csv")
 df['Order Date'] = pd.to_datetime(df['Order Date'])
 
 # ==============================
-# CREATE DASH APP
+# APP
 # ==============================
 
 app = Dash(__name__)
 
 # ==============================
-# LAYOUT
+# LAYOUT (VERTICAL POWER BI STYLE)
 # ==============================
 
-app.layout = html.Div([
+app.layout = html.Div(
+    style={
+        "fontFamily": "Verdana, sans-serif"
+    },
+    children=[
 
-    html.H1("Superstore Sales Dashboard"),
+    # HEADER
+    html.Div([
+        html.H1("Superstore Sales Dashboard"),
+        html.P("Analytics Report (Python + Plotly Dash)")
+    ]),
 
-    html.Label("Select Year:"),
-
+    # FILTER
     dcc.Dropdown(
         options=[{'label': 'All Years', 'value': 'ALL'}] +
                 [{'label': year, 'value': year} for year in sorted(df['Year'].unique())],
         value='ALL',
-        id='year_filter'
+        id='year_filter',
+        clearable=False,
+        style={"width": "300px"}
     ),
 
+    # KPI ROW
+    html.Div(id='kpi_row'),
+
+    # CHARTS (VERTICAL STACK)
     dcc.Graph(id='bar_chart'),
     dcc.Graph(id='heatmap'),
     dcc.Graph(id='line_chart'),
     dcc.Graph(id='pie_chart'),
     dcc.Graph(id='map_chart'),
-    dcc.Graph(id='box_plot')
+    dcc.Graph(id='box_plot'),
+
 ])
+
 
 # ==============================
 # CALLBACK
@@ -46,6 +61,7 @@ app.layout = html.Div([
 
 @app.callback(
     [
+        Output('kpi_row', 'children'),
         Output('bar_chart', 'figure'),
         Output('heatmap', 'figure'),
         Output('line_chart', 'figure'),
@@ -58,123 +74,80 @@ app.layout = html.Div([
 
 def update_dashboard(selected_year):
 
+    # FILTER
     if selected_year == 'ALL':
         filtered_df = df
     else:
         filtered_df = df[df['Year'] == selected_year]
 
-    # ==============================
-    # BAR CHART (FIXED - DATAFRAME METHOD)
-    # ==============================
-
-    sales_by_category = filtered_df.groupby('Category')['Sales'].sum().reset_index()
-
-    barChart = px.bar(
-        sales_by_category,
-        x='Category',
-        y='Sales',
-        title='Sales by Category',
-        text='Sales'
-    )
-
-    barChart.update_traces(textposition='outside')
-
-    barChart.update_layout(
-        xaxis_title='Category',
-        yaxis_title='Sales'
-    )
+    # KPI METRICS
+    total_sales = filtered_df['Sales'].sum()
+    total_profit = filtered_df['Profit'].sum()
+    profit_margin = total_profit / total_sales if total_sales != 0 else 0
 
     # ==============================
-    # HEATMAP
+    # KPI CARDS (PLASMA STYLE COLORS)
     # ==============================
 
-    heat = filtered_df.pivot_table(
-        values='Profit',
-        index='Region',
-        columns='Category',
-        aggfunc='sum'
-    )
+    kpis = html.Div([
 
-    heatMap = px.imshow(
-        heat,
-        text_auto=True,
-        title='Profit by Region and Category',
-        labels=dict(x="Category", y="Region", color="Profit")
-    )
+        html.Div([
+            html.H3(f"${total_sales:,.0f}"),
+            html.P("Total Sales")
+        ], style={
+            "background": "linear-gradient(135deg, #0d0887, #6a00a8)",
+            "color": "white",
+            "padding": "15px",
+            "borderRadius": "12px",
+            "textAlign": "center",
+            "width": "30%",
+            "boxShadow": "2px 2px 10px rgba(0,0,0,0.15)"
+        }),
 
-    # ==============================
-    # LINE CHART
-    # ==============================
+        html.Div([
+            html.H3(f"${total_profit:,.0f}"),
+            html.P("Total Profit")
+        ], style={
+            "background": "linear-gradient(135deg, #b12a90, #e16462)",
+            "color": "white",
+            "padding": "15px",
+            "borderRadius": "12px",
+            "textAlign": "center",
+            "width": "30%",
+            "boxShadow": "2px 2px 10px rgba(0,0,0,0.15)"
+        }),
 
-    monthly_sales = filtered_df.groupby(
-        pd.Grouper(key='Order Date', freq='ME')
-    )['Sales'].sum().reset_index()
+        html.Div([
+            html.H3(f"{profit_margin:.2%}"),
+            html.P("Profit Margin")
+        ], style={
+            "background": "linear-gradient(135deg, #f89441, #f0f921)",
+            "color": "black",
+            "padding": "15px",
+            "borderRadius": "12px",
+            "textAlign": "center",
+            "width": "30%",
+            "boxShadow": "2px 2px 10px rgba(0,0,0,0.15)"
+        }),
 
-    lineChart = px.line(
-        monthly_sales,
-        x='Order Date',
-        y='Sales',
-        markers=True,
-        title='Monthly Sales Trend'
-    )
-
-    # ==============================
-    # PIE CHART
-    # ==============================
-
-    category_sales = filtered_df.groupby('Category')['Sales'].sum().reset_index()
-
-    pieChart = px.pie(
-        category_sales,
-        names='Category',
-        values='Sales',
-        title='Sales Distribution by Category',
-        color_discrete_sequence=px.colors.sequential.Plasma
-    )
-
-    # ==============================
-    # MAP
-    # ==============================
-
-    state_sales = filtered_df.groupby('State/Province')['Sales'].sum().reset_index()
-
-    mapChart = px.choropleth(
-        state_sales,
-        locations='State/Province',
-        locationmode='USA-states',
-        color='Sales',
-        scope='usa',
-        title='Sales by U.S. State'
-    )
+    ], style={
+        "display": "flex",
+        "justifyContent": "space-between",
+        "marginTop": "20px",
+        "marginBottom": "20px"
+    })
 
     # ==============================
-    # BOXPLOT (FIXED X-AXIS ISSUE)
-    # ==============================
-
-    boxPlot = px.box(
-        filtered_df,
-        x='Category',
-        y='Sales',
-        title='Sales Values'
-    )
-
-    boxPlot.update_layout(
-        xaxis_title='Category',
-        yaxis_title='Sales'
-    )
-
-    return barChart, heatMap, lineChart, pieChart, mapChart, boxPlot
-
-
-# ==============================
-# EXPORT STATIC HTML FOR GITHUB PAGES
-# ==============================
-
-def export_static_dashboard():
-
-    filtered_df = df
-
     # BAR CHART
+    # ==============================
+    html.Div(id='font_debug', style={
+        "marginTop": "10px",
+        "fontFamily": "monospace",
+        "whiteSpace": "pre-wrap",
+        "background": "#f5f5f5",
+        "padding": "10px",
+        "borderRadius": "8px"
+    })
     sales_by_category = filtered_df.groupby('Category')['Sales'].sum().reset_index()
 
     barChart = px.bar(
@@ -184,11 +157,14 @@ def export_static_dashboard():
         title='Sales by Category',
         text='Sales'
     )
-
+    
     barChart.update_traces(textposition='outside')
-    barChart.update_layout(xaxis_title='Category', yaxis_title='Sales')
+    barChart.update_layout(xaxis_title="Category", yaxis_title="Sales")
 
+    # ==============================
     # HEATMAP
+    # ==============================
+
     heat = filtered_df.pivot_table(
         values='Profit',
         index='Region',
@@ -199,11 +175,13 @@ def export_static_dashboard():
     heatMap = px.imshow(
         heat,
         text_auto=True,
-        title='Profit by Region and Category',
-        labels=dict(x="Category", y="Region", color="Profit")
+        title='Profit by Region and Category'
     )
 
+    # ==============================
     # LINE CHART
+    # ==============================
+
     monthly_sales = filtered_df.groupby(
         pd.Grouper(key='Order Date', freq='ME')
     )['Sales'].sum().reset_index()
@@ -216,18 +194,24 @@ def export_static_dashboard():
         title='Monthly Sales Trend'
     )
 
+    # ==============================
     # PIE CHART
-    category_sales = filtered_df.groupby('Category')['Sales'].sum().reset_index()
+    # ==============================
+
+    pie_data = filtered_df.groupby('Category')['Sales'].sum().reset_index()
 
     pieChart = px.pie(
-        category_sales,
+        pie_data,
         names='Category',
         values='Sales',
         title='Sales Distribution by Category',
         color_discrete_sequence=px.colors.sequential.Plasma
     )
 
+    # ==============================
     # MAP
+    # ==============================
+
     state_sales = filtered_df.groupby('State/Province')['Sales'].sum().reset_index()
 
     mapChart = px.choropleth(
@@ -239,38 +223,18 @@ def export_static_dashboard():
         title='Sales by U.S. State'
     )
 
+    # ==============================
     # BOXPLOT
+    # ==============================
+
     boxPlot = px.box(
         filtered_df,
         x='Category',
         y='Sales',
-        title='Sales Values'
+        title='Sales Distribution'
     )
 
-    boxPlot.update_layout(
-        xaxis_title='Category',
-        yaxis_title='Sales'
-    )
-
-    # EXPORT HTML
-    html_content = f"""
-    <html>
-    <head><title>Superstore Dashboard</title></head>
-    <body>
-    {barChart.to_html(full_html=False, include_plotlyjs='cdn')}
-    {heatMap.to_html(full_html=False, include_plotlyjs=False)}
-    {lineChart.to_html(full_html=False, include_plotlyjs=False)}
-    {pieChart.to_html(full_html=False, include_plotlyjs=False)}
-    {mapChart.to_html(full_html=False, include_plotlyjs=False)}
-    {boxPlot.to_html(full_html=False, include_plotlyjs=False)}
-    </body>
-    </html>
-    """
-
-    with open("docs/index.html", "w", encoding="utf-8") as f:
-        f.write(html_content)
-
-    print("GitHub Pages dashboard saved to docs/index.html")
+    return kpis, barChart, heatMap, lineChart, pieChart, mapChart, boxPlot
 
 
 # ==============================
@@ -278,5 +242,4 @@ def export_static_dashboard():
 # ==============================
 
 if __name__ == '__main__':
-    export_static_dashboard()
     app.run(debug=True)
