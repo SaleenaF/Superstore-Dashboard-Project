@@ -44,6 +44,18 @@ app.layout = html.Div(
     # KPI ROW
     html.Div(id='kpi_row'),
 
+    # BAR / CATEGORY TOGGLE
+    dcc.Dropdown(
+        id='bar_toggle',
+        options=[
+            {'label': 'Category', 'value': 'Category'},
+            {'label': 'Sub-Category', 'value': 'Sub-Category'}
+        ],
+        value='Category',
+        clearable=False,
+        style={"width": "300px", "marginTop": "10px"}
+    ),
+
     # CHARTS (VERTICAL STACK)
     dcc.Graph(id='bar_chart'),
     dcc.Graph(id='heatmap'),
@@ -69,10 +81,13 @@ app.layout = html.Div(
         Output('map_chart', 'figure'),
         Output('box_plot', 'figure')
     ],
-    [Input('year_filter', 'value')]
+    [
+        Input('year_filter', 'value'),
+        Input('bar_toggle', 'value')
+    ]
 )
 
-def update_dashboard(selected_year):
+def update_dashboard(selected_year, selected_bar):
 
     # FILTER
     if selected_year == 'ALL':
@@ -140,6 +155,7 @@ def update_dashboard(selected_year):
     # ==============================
     # BAR CHART
     # ==============================
+
     html.Div(id='font_debug', style={
         "marginTop": "10px",
         "fontFamily": "monospace",
@@ -148,18 +164,23 @@ def update_dashboard(selected_year):
         "padding": "10px",
         "borderRadius": "8px"
     })
-    sales_by_category = filtered_df.groupby('Category')['Sales'].sum().reset_index()
+
+    sales_data = filtered_df.groupby(selected_bar)['Sales'].sum().reset_index()
 
     barChart = px.bar(
-        sales_by_category,
-        x='Category',
+        sales_data,
+        x=selected_bar,
         y='Sales',
-        title='Sales by Category',
+        title=f'Sales by {selected_bar}',
         text='Sales'
     )
-    
+
     barChart.update_traces(textposition='outside')
-    barChart.update_layout(xaxis_title="Category", yaxis_title="Sales")
+
+    barChart.update_layout(
+        xaxis_title=selected_bar,
+        yaxis_title="Sales"
+    )
 
     # ==============================
     # HEATMAP
@@ -168,14 +189,14 @@ def update_dashboard(selected_year):
     heat = filtered_df.pivot_table(
         values='Profit',
         index='Region',
-        columns='Category',
+        columns=selected_bar,
         aggfunc='sum'
     )
 
     heatMap = px.imshow(
         heat,
         text_auto=True,
-        title='Profit by Region and Category'
+        title=f'Profit by Region and {selected_bar}'
     )
 
     # ==============================
@@ -198,17 +219,38 @@ def update_dashboard(selected_year):
     # PIE CHART
     # ==============================
 
-    pie_data = filtered_df.groupby('Category')['Sales'].sum().reset_index()
+    pie_data = filtered_df.groupby(selected_bar)['Sales'].sum().reset_index()
 
     # My custom colours
-    my_colors = ["#efff43", "#495eff", '#e74c3c', "#ffcc00"] 
+    my_colors = [
+        "#efff43",  # bright yellow
+        "#495eff",  # blue
+        "#e74c3c",  # red
+        "#ffcc00",  # gold
+        "#00c2ff",  # cyan
+        "#9b59b6",  # purple
+        "#2ecc71",  # green
+        "#ff7f50",  # coral
+        "#1abc9c",  # teal
+        "#f39c12",  # orange
+        "#d63384",  # pink
+        "#34495e",  # dark blue-gray
+        "#7f8c8d",  # gray
+        "#8e44ad",  # deep purple
+        "#27ae60",  # emerald
+        "#c0392b",  # dark red
+        "#2980b9",  # strong blue
+        "#16a085",  # dark teal
+        "#f1c40f",  # sunflower
+        "#e67e22"   # carrot orange
+    ]
 
     pieChart = px.pie(
         pie_data,
-        names='Category',
+        names=selected_bar,
         values='Sales',
-        title='Sales Distribution by Category',
-        color_discrete_sequence=my_colors  # Direct list injection
+        title=f'Sales Distribution by {selected_bar}',
+        color_discrete_sequence=my_colors
     )
 
     # ==============================
@@ -232,9 +274,9 @@ def update_dashboard(selected_year):
 
     boxPlot = px.box(
         filtered_df,
-        x='Category',
+        x=selected_bar,
         y='Sales',
-        title='Sales Distribution'
+        title=f'Sales Distribution by {selected_bar}'
     )
 
     return kpis, barChart, heatMap, lineChart, pieChart, mapChart, boxPlot
