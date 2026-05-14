@@ -15,16 +15,19 @@ The goal is to simulate a real-world data analyst workflow and support data-driv
 
 ## 🌐 Live Dashboard
 
-You can view the interactive dashboard here (GitHub Pages):
+You can view the dashboard here (GitHub Pages):
 
 👉 https://saleenaf.github.io/Superstore-Dashboard-Project/
 
-The dashboard is fully interactive and includes:
-* Year filtering
+The dashboard includes:
 * Sales analysis by category
 * Profit heatmap
 * Time-based trend analysis
 * Geographic sales distribution
+
+> ⚠️ Note:
+> The GitHub Pages version is a static HTML export of the dashboard.
+> Interactive Dash-specific components such as the Year filter dropdown and KPI cards are only available when running the local Dash application (`dashboard.py`).
 
 ---
 
