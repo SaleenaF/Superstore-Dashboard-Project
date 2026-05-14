@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 import plotly.express as px
 from dash import Dash, dcc, html, Input, Output
@@ -283,8 +284,19 @@ def update_dashboard(selected_year, selected_bar):
 
 
 # ==============================
-# RUN APP
+# RUN APP & EXPORT
 # ==============================
 
 if __name__ == '__main__':
+    # Ensure folder exists
+    os.makedirs('docs', exist_ok=True)
+
+    # 1. Get the figures (Ignoring KPIs with the _)
+    _, *charts = update_dashboard('ALL', 'Category')
+
+    # 2. One-liner to save everything to docs/index.html
+    with open("docs/index.html", "w", encoding="utf-8") as f:
+        f.write("".join([c.to_html(full_html=False, include_plotlyjs='cdn') for c in charts]))
+
+    print("Dashboard saved to docs/index.html")
     app.run(debug=True)
