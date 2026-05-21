@@ -57,11 +57,17 @@ app.layout = html.Div(
         style={"width": "300px", "marginTop": "10px"}
     ),
 
-    # CHARTS (VERTICAL STACK)
+    # CHARTS (STACKED LAYOUT)
     dcc.Graph(id='bar_chart'),
     dcc.Graph(id='heatmap'),
     dcc.Graph(id='line_chart'),
-    dcc.Graph(id='pie_chart'),
+    
+    # SIDE-BY-SIDE CONTAINER FOR PIE AND SUNBURST
+    html.Div([
+        dcc.Graph(id='pie_chart', style={"width": "49%"}),
+        dcc.Graph(id='sunburst_chart', style={"width": "49%"})
+    ], style={"display": "flex", "justifyContent": "space-between", "marginTop": "10px", "marginBottom": "10px"}),
+    
     dcc.Graph(id='map_chart'),
     dcc.Graph(id='box_plot'),
 
@@ -79,6 +85,7 @@ app.layout = html.Div(
         Output('heatmap', 'figure'),
         Output('line_chart', 'figure'),
         Output('pie_chart', 'figure'),
+        Output('sunburst_chart', 'figure'),
         Output('map_chart', 'figure'),
         Output('box_plot', 'figure')
     ],
@@ -87,7 +94,6 @@ app.layout = html.Div(
         Input('bar_toggle', 'value')
     ]
 )
-
 def update_dashboard(selected_year, selected_bar):
 
     # FILTER
@@ -157,15 +163,6 @@ def update_dashboard(selected_year, selected_bar):
     # BAR CHART
     # ==============================
 
-    html.Div(id='font_debug', style={
-        "marginTop": "10px",
-        "fontFamily": "monospace",
-        "whiteSpace": "pre-wrap",
-        "background": "#f5f5f5",
-        "padding": "10px",
-        "borderRadius": "8px"
-    })
-
     sales_data = filtered_df.groupby(selected_bar)['Sales'].sum().reset_index()
 
     barChart = px.bar(
@@ -217,33 +214,16 @@ def update_dashboard(selected_year, selected_bar):
     )
 
     # ==============================
-    # PIE CHART
+    # PIE CHART (ORIGINAL)
     # ==============================
 
     pie_data = filtered_df.groupby(selected_bar)['Sales'].sum().reset_index()
 
-    # My custom colours
     my_colors = [
-        "#efff43",  # bright yellow
-        "#495eff",  # blue
-        "#e74c3c",  # red
-        "#ffcc00",  # gold
-        "#00c2ff",  # cyan
-        "#9b59b6",  # purple
-        "#2ecc71",  # green
-        "#ff7f50",  # coral
-        "#1abc9c",  # teal
-        "#f39c12",  # orange
-        "#d63384",  # pink
-        "#34495e",  # dark blue-gray
-        "#7f8c8d",  # gray
-        "#8e44ad",  # deep purple
-        "#27ae60",  # emerald
-        "#c0392b",  # dark red
-        "#2980b9",  # strong blue
-        "#16a085",  # dark teal
-        "#f1c40f",  # sunflower
-        "#e67e22"   # carrot orange
+        "#efff43", "#495eff", "#e74c3c", "#ffcc00", "#00c2ff", 
+        "#9b59b6", "#2ecc71", "#ff7f50", "#1abc9c", "#f39c12", 
+        "#d63384", "#34495e", "#7f8c8d", "#8e44ad", "#27ae60", 
+        "#c0392b", "#2980b9", "#16a085", "#f1c40f", "#e67e22"
     ]
 
     pieChart = px.pie(
@@ -253,6 +233,31 @@ def update_dashboard(selected_year, selected_bar):
         title=f'Sales Distribution by {selected_bar}',
         color_discrete_sequence=my_colors
     )
+
+    # ==============================
+    # SUNBURST CHART (NEW)
+    # ==============================
+
+    if 'Region' in filtered_df.columns:
+        sunburst_data = filtered_df.groupby(['Region', selected_bar])['Sales'].sum().reset_index()
+        
+        sunburstChart = px.sunburst(
+            sunburst_data, 
+            path=['Region', selected_bar], 
+            values='Sales',
+            title=f'Sales by Region and {selected_bar}',
+            color='Sales',
+            color_continuous_scale='Plasma'
+        )
+    else:
+        sunburstChart = px.sunburst(
+            filtered_df, 
+            path=[selected_bar], 
+            values='Sales',
+            title=f'Sales by {selected_bar}',
+            color='Sales',
+            color_continuous_scale='Plasma'
+        )
 
     # ==============================
     # MAP
@@ -280,7 +285,7 @@ def update_dashboard(selected_year, selected_bar):
         title=f'Sales Distribution by {selected_bar}'
     )
 
-    return kpis, barChart, heatMap, lineChart, pieChart, mapChart, boxPlot
+    return kpis, barChart, heatMap, lineChart, pieChart, sunburstChart, mapChart, boxPlot
 
 
 # ==============================
