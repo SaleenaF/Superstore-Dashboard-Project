@@ -92,6 +92,7 @@ python -m pip install --upgrade pip
 
 ## 📁 Project Structure
 
+```text
 Superstore-Dashboard-Project/
 │
 ├── data/                  # Dataset files
