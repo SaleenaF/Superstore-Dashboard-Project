@@ -102,6 +102,7 @@ Superstore-Dashboard-Project/
 ├── dashboard.py           # Dash app + HTML export
 ├── requirements.txt       # Required libraries
 └── README.md              # Project documentation
+```
 
 ---
 
