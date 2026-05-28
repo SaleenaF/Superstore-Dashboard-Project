@@ -92,6 +92,7 @@ python -m pip install --upgrade pip
 
 ## 📁 Project Structure
 
+```text
 Superstore-Dashboard-Project/
 │
 ├── data/                  # Dataset files
@@ -101,6 +102,7 @@ Superstore-Dashboard-Project/
 ├── dashboard.py           # Dash app + HTML export
 ├── requirements.txt       # Required libraries
 └── README.md              # Project documentation
+```
 
 ---
 
