@@ -36,12 +36,14 @@ The dashboard features:
 
 ## 📂 Dataset
 
-Dataset used: Superstore Sales Dataset (Kaggle)
+**Dataset used:** Superstore Sales Dataset (Kaggle)
 
 It includes:
 * Sales, Profit, Category, Region
 * Order Dates (time-based analysis)
 * Customer and product-level data
+
+> 💡 **Timeline Note:** This dataset utilizes a shifted, forward-looking timeline that structures baseline transactional data across a clean multi-year block ending in December 2026. While the store behaviors, product relationships, and sales patterns are modeled on real-world retail operations, the calendar years have been synthetically rolled forward by the dataset creator. It functions as a simulated corporate environment optimized for practicing dashboard design, seasonal trend tracking, and pipeline performance.
 
 ---
 
