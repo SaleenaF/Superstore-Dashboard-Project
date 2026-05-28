@@ -15,19 +15,22 @@ The goal is to simulate a real-world data analyst workflow and support data-driv
 
 ## 🌐 Live Dashboard
 
-You can view the dashboard here (GitHub Pages):
+You can explore the project through two different live versions depending on the level of interactivity you want to test:
 
-👉 https://saleenaf.github.io/Superstore-Dashboard-Project/
+### ⚡ 1. Fully Interactive Cloud App (Recommended)
+Experience the complete, dynamically updating dashboard with all filters, dropdowns, and zoom functions active:
+👉 [Click here to view the Interactive Dash App](https://7c1dda6a-4879-4e18-9be3-787992980b17.plotly.app)
 
-The dashboard includes:
-* Sales analysis by category
-* Profit heatmap
-* Time-based trend analysis
-* Geographic sales distribution
+> ⚠️ **Performance Note:** > Because this is hosted on a free cloud tier, interactions (like closing out of a zoomed chart) may take a few seconds to process as the server handles callbacks. For the absolute fastest, zero-latency performance, run the app locally using Visual Studio Code as detailed in the setup steps below!
 
-> ⚠️ Note:
-> The GitHub Pages version is a static HTML export of the dashboard.
-> Interactive Dash-specific components such as the Year filter dropdown and KPI cards are only available when running the local Dash application (`dashboard.py`).
+### 📄 2. Static HTML Portfolio View
+A quick, instant-loading static export of the dashboard layout:
+👉 [Click here to view the GitHub Pages Version](https://saleenaf.github.io/Superstore-Dashboard-Project/)
+
+The dashboard features:
+* **Interactive Grid View:** Click anywhere on a chart container block to instantly expand it into a centered, full-screen view.
+* **Smart Filtering:** Dynamic year dropdown configurations and Category/Sub-Category toggles.
+* **Comprehensive Analytics:** Dynamic Profit heatmaps, Choropleth map geo-tracking, Sunburst structure trees, and standard descriptive statistical charts.
 
 ---
 
