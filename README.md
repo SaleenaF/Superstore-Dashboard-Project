@@ -3,11 +3,11 @@
 ## 👥 Team Members
 
 | Name | GitHub Profile |
-| :--- | :--- | :--- |
-| **[Saleena Farrukh]** https://github.com/SaleenaF |
-| **[Evangeline Dhanasingh]** https://github.com/Evangeline1710 |
-| **[Subhi Al-Khafaji]** https://github.com/cavalier1 |
-| **[Susha Vincent]** https://github.com/Susha-Vincent |
+| :--- | :--- |
+| **Saleena Farrukh** | [@SaleenaF](https://github.com/SaleenaF) |
+| **Evangeline Dhanasingh** | [@Evangeline1710](https://github.com/Evangeline1710) |
+| **Subhi Al-Khafaji** | [@cavalier1](https://github.com/cavalier1) |
+| **Susha Vincent** | [@Susha-Vincent](https://github.com/Susha-Vincent) |
 
 ---
 
