@@ -1,5 +1,16 @@
 # 📊 Superstore Sales Dashboard Project
 
+## 👥 Team Members
+
+| Name | GitHub Profile |
+| :--- | :--- | :--- |
+| **[Saleena Farrukh]** https://github.com/SaleenaF |
+| **[Evangeline Dhanasingh]** https://github.com/Evangeline1710 |
+| **[Subhi Al-Khafaji]** https://github.com/cavalier1 |
+| **[Susha Vincent]** https://github.com/Susha-Vincent |
+
+---
+
 ## 📌 Project Overview
 
 This project focuses on transforming raw retail sales data into meaningful business insights through data analysis and an interactive dashboard.
